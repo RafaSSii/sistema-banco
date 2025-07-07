@@ -1,12 +1,25 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Banco {
+public class Banco{
     private List<Conta> contas = new ArrayList<>();
-    private int contadorContas = 1;
+    private int contadorContas = 1001;
 
-    public Conta criarConta(String tipo, String nome, String cpf){
+    public Conta criarConta(String tipo, String nome, String cpf) throws IllegalArgumentException{
         Cliente cliente = new Cliente(nome, cpf);
-        Conta conta = tipo.equals("corrente") ? new ContaCorrente(cliente, contadorContas) : new ContaPoupanca(cliente, contadorContas);
+        Conta conta;
+
+        switch (tipo.toLowerCase()){
+            case "corrente":
+                conta = new ContaCorrente(cliente, contadorContas);
+                break;
+            case "poupanca":
+            case "poupança":
+                conta = new ContaPoupanca(cliente, contadorContas);
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de conta inválido! Use 'corrente' ou 'poupanca'");
+        }
 
         contas.add(conta);
         contadorContas++;
@@ -15,12 +28,19 @@ public class Banco {
 
     public Conta buscarConta(int numero){
         for (Conta c : contas){
-            if (c.getNumero() == numero) return c;
+            if (c.getNumero() == numero){
+                return c;
+            }
         }
         return null;
     }
 
     public List<Conta> listarContas(){
-        return contas;
+        return new ArrayList<>(contas);
     }
+
+    public boolean existeConta(int numero){
+        return buscarConta(numero) != null;
+    }
+    
 }
