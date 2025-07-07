@@ -45,4 +45,47 @@ public abstract class Conta {
         }
         return false;
     }
+
+    protected void validarValor(BigDecimal valor){
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Valor deve ser positivo!!!");
+        }
+    }
+
+    protected boolean podeRetirar(BigDecimal valor){
+        return saldo.compareTo(valor) >= 0;
+    }
+
+    public void exibirExtrato(){
+        System.out.println("\n=== EXTRATO DA CONTA " + numero + " ===");
+        System.out.println(cliente.toString());
+        System.out.println("Tipo: " + getTipo());
+        System.out.println("\nMovimentações:");
+
+        for (Transacao t : historico){
+            System.out.println("- " + t.toString());
+        }
+
+        System.out.println("\nSaldo atual: R$ " + saldo.setScale(2, RoundingMode.HALF_UP));
+        System.out.println("=====================================\n");
+    }
+
+    public BigDecimal getSaldo(){
+        return saldo;
+    }
+
+    public int getNumero(){
+        return numero;
+    }
+
+    public Cliente getCliente(){
+        return cliente;
+    }
+
+    public abstract String getTipo();
+
+    @Override
+    public String toString(){
+        return String.format("Conta %d - %s - %s - Saldo: R$ %.2f", numero, getTipo(), cliente.getNome(), saldo);
+    }
 }
