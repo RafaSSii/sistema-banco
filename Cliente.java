@@ -18,7 +18,7 @@ public class Cliente {
     }
     private void validarCpf(String cpf){
         if (cpf == null || cpf.replaceAll("[^0-9]","").length() != 11){
-            throw new IllegalArgumentException("CPF dewve ter 11 dígitos");
+            throw new IllegalArgumentException("CPF deve ter 11 dígitos");
         }
     }
     public String getNome(){
