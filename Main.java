@@ -160,4 +160,56 @@ public class Main {
             System.out.println("✗ Erro: " + e.getMessage());
         }
     }
+
+    private static void consultarSaldo(){
+        System.out.println("Número da conta: ");
+        int numero = scanner.nextInt();
+
+        Conta conta = banco.buscarConta(numero);
+        if (conta == null){
+            System.out.println("✗ Conta não encontrada!");
+            return;
+        }
+
+        System.out.println("\n=== CONSULTA DE SALDO ===");
+        System.out.println("Conta: " + conta.getNumero());
+        System.out.println("Cliente: " + conta.getCliente().getNome());
+        System.out.println("Tipo: " + conta.getTipo());
+        System.out.println("Saldo: R$ " + conta.getSaldo().setScale(2, RoundingMode.HALF_UP));
+
+        if (conta instanceof ContaCorrente){
+            ContaCorrente cc = (ContaCorrente) conta;
+            System.out.println("Limite: R$ " + cc.getLimite().setScale(2, RoundingMode.HALF_UP));
+            System.out.println("Saldo disponível: R$ " + cc.getSaldo().setScale(2,RoundingMode.HALF_UP));
+        }
+        System.out.println("========================\n");
+    }
+
+    private static void exibirExtrato(){
+        System.out.println("Número da conta: ");
+        int numero = scanner.nextInt();
+
+        Conta conta = banco.buscarConta(numero);
+        if (conta == null){
+            System.out.println("✗ Conta não encontrada!");
+            return;
+        }
+
+        conta.exibirExtrato();
+    }
+
+    private static void listarContas(){
+        List<Conta> contas = banco.listarContas();
+
+        if (contas.isEmpty()){
+            System.out.println("Nenhuma conta cadastrada!");
+            return;
+        }
+
+        System.out.println("\n=== CONTAS CADASTRADAS ===");
+        for (Conta conta : contas){
+            System.out.println(conta.toString());
+        }
+        System.out.println("==========================\n");
+    }
 }
